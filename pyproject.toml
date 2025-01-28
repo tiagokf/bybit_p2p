@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bybit_p2p"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Nickolay Kushnarenko", email="kolya@nk.ax" },
 ]
