@@ -2,11 +2,14 @@ import base64
 import hashlib
 import hmac
 import json
+import os
+
 import requests
 import logging
 import time
 from datetime import datetime as dt, timezone
 from json import JSONDecodeError
+from requests_toolbelt import MultipartEncoder
 
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
@@ -86,15 +89,46 @@ class P2PManager:
 
         # construct request in accordance with API specs
         timestamp = int(time.time() * 10 ** 3)
-        payload = self._generate_payload(method.http_method, params)
-        signature = self._generate_sign(payload, timestamp)
+
+        contentType = "application/json"
+        # special handling for FILE data type
+        if method.http_method == "FILE":
+            filepath = params["upload_file"]
+            boundary = "boundary-for-file"
+            contentType = f"multipart/form-data; boundary={boundary}"
+            filename = os.path.basename(str(filepath))
+            mimeType = "image/png"
+
+            with open(filepath, "rb") as f:
+                binary_data = f.read()
+
+            files = MultipartEncoder(
+                {
+                    'upload_file': (
+                        filename,
+                        open(filepath, "rb"),
+                        mimeType
+                    )
+                },
+                boundary=boundary
+            )
+            payload = (
+                f"--{boundary}\r\n"
+                f"Content-Disposition: form-data; name=\"upload_file\"; filename=\"{filename}\"\r\nContent-Type: {mimeType}\r\n\r\n"
+            ).encode() + binary_data + f"\r\n--{boundary}--\r\n".encode()
+            signature = self._generate_sign_binary(payload, timestamp)
+            payload = files.to_string()  # final conversion to send to server
+        else:
+            payload = self._generate_payload(method.http_method, params)
+            signature = self._generate_sign(payload, timestamp)
+
         headers = {
             'X-BAPI-API-KEY': self._api_key,
             'X-BAPI-SIGN': signature,
             'X-BAPI-SIGN-TYPE': '2',
             'X-BAPI-TIMESTAMP': str(timestamp),
             'X-BAPI-RECV-WINDOW': str(self._recv_window),
-            'Content-Type': 'application/json'
+            'Content-Type': contentType
         }
 
         # build the request
@@ -105,10 +139,10 @@ class P2PManager:
                     method.http_method, endpoint + f"?{payload}" if payload != "" else "", headers=headers
                 )
             )
-        elif method.http_method == "POST":
+        elif method.http_method == "POST" or method.http_method == "FILE":
             r = self.client.prepare_request(
                 requests.Request(
-                    method.http_method, endpoint, data=payload, headers=headers
+                    "POST", endpoint, data=payload, headers=headers
                 )
             )
 
@@ -181,27 +215,69 @@ class P2PManager:
         sign_string = str(timestamp) + self._api_key + str(self._recv_window) + payload
         return P2PManager._sign(self._rsa, self._api_secret, sign_string)
 
+    def _generate_sign_binary(self, payload, timestamp):
+        sign_string = f"{timestamp}{self._api_key}{self._recv_window}".encode() + payload
+        return P2PManager._sign(self._rsa, self._api_secret, sign_string, True)
+
     # reference: https://github.com/bybit-exchange/pybit
     @staticmethod
     def _cast_values(params):
         str_params = [
             "itemId",
-            "status",
             "side",
-            "page",
-            "size",
-            "currency_id"
+            "currency_id",
+            # get_ad_detail
+            "id",
+            "priceType",
+            "premium",
+            "price",
+            "minAmount",
+            "maxAmount",
+            "remark",
+            "actionType",
+            "quantity",
+            "paymentPeriod",
+            # -> tradingPreferenceSet
+            "hasUnPostAd",
+            "isKyc",
+            "isEmail",
+            "isMobile",
+            "hasRegisterTime",
+            "registerTimeThreshold",
+            "orderFinishNumberDay30",
+            "completeRateDay30",
+            "nationalLimit",
+            "hasOrderFinishNumberDay30",
+            "hasCompleteRateDay30",
+            "hasNationalLimit",
+            # get_orders
+            "beginTime",
+            "endTime",
+            "tokenId",
+            # get chat message
+            "startMessageId"
         ]
         int_params = [
-            "positionIdx"
+            "positionIdx",
         ]
-        for key, value in params.items():
+
+        P2PManager._cast_dict_recursively(params, str_params, int_params)
+
+
+    @staticmethod
+    def _cast_dict_recursively(dictionary, str_params, int_params):
+        for key, value in dictionary.items():
+            if isinstance(value, dict):
+                # recursive edit
+                P2PManager._cast_dict_recursively(value, str_params, int_params)
+                continue
+
             if key in str_params:
-                if type(value) != str:
-                    params[key] = str(value)
+                if not isinstance(value, str):
+                    dictionary[key] = str(value)
             elif key in int_params:
-                if type(value) != int:
-                    params[key] = int(value)
+                if not isinstance(value, int):
+                    dictionary[key] = int(value)
 
     # reference: https://github.com/bybit-exchange/pybit
     @staticmethod
@@ -215,17 +291,26 @@ class P2PManager:
                 ]
             )
             return payload
-        else:
+        elif http_method == "POST":
             P2PManager._cast_values(params)
             return json.dumps(params)
 
+
     # reference: https://github.com/bybit-exchange/pybit
     @staticmethod
-    def _sign(use_rsa_authentication, secret, param_str):
+    def _sign(use_rsa_authentication, secret, param_str, binary=False):
         def generate_hmac():
             hash = hmac.new(
                 bytes(secret, "utf-8"),
                 param_str.encode("utf-8"),
+                hashlib.sha256,
+            )
+            return hash.hexdigest()
+
+        def generate_hmac_binary():
+            hash = hmac.new(
+                bytes(secret, "utf-8"),
+                param_str,
                 hashlib.sha256,
             )
             return hash.hexdigest()
@@ -239,8 +324,21 @@ class P2PManager:
             )
             return encoded_signature.decode()
 
+        def generate_rsa_binary():
+            hash = SHA256.new(param_str)
+            encoded_signature = base64.b64encode(
+                PKCS1_v1_5.new(RSA.importKey(secret)).sign(
+                    hash
+                )
+            )
+            return encoded_signature.decode()
+
         if not use_rsa_authentication:
+            if binary:
+                return generate_hmac_binary()
             return generate_hmac()
         else:
+            if binary:
+                return generate_rsa_binary()
             return generate_rsa()
 
