@@ -75,28 +75,41 @@ bybit_p2p library currently consists of just one module, which is used for direc
 You can access P2P API documentation using this link: [Not Available at this moment in time](https://google.com/)
 
 Here is a breakdown of how API methods correspond to appropriate bybit_p2p methods:
+
+Advertisements:
 | bybit_p2p method name | P2P API method name | P2P API endpoint path |
 | --- | --- | --- |
-| get_current_balance() | Get current balance | [/v5/asset/transfer/query-account-coins-balance](https://bybit-exchange.github.io/docs/v5/asset/balance/all-balance) |
-| get_account_information() | Get account information | /v5/p2p/user/personal/info |
-| get_ads_list() | Get ads list | /v5/p2p/item/personal/list |
-| get_ad_detail() | Get ad detail | /v5/p2p/item/info |
-| update_ad() | Update/reOnline ads | /v5/p2p/item/update |
-| offline_ad() | Offline ads | /v5/p2p/item/cancel |
-| get_orders() | Get orders | /v5/p2p/order/simplifyList |
-| get_pending_orders() | Get pending orders | /v5/p2p/order/pending/simplifyList |
-| get_user_order_statistics() | Get user's order statistic | /v5/p2p/user/order/personal/info |
-| get_order_details() | Get order detail | /v5/p2p/order/info |
-| release_assets() | Release digital asset | /v5/p2p/order/finish |
-| mark_as_paid() | Mark order as paid | /v5/p2p/order/pay |
-| get_chat_messages() | Get chat message | /v5/p2p/order/message/list |
-| upload_chat_file() | Upload chat file | /v5/p2p/oss/upload_file |
-| send_chat_message() | Send chat message | /v5/p2p/order/message/send |
-| post_new_ad() | post new ad | /v5/p2p/item/create |
-| get_online_ads() | online Ad list | /v5/p2p/item/online |
-| get_user_payment_types() | Get user payment | /v5/p2p/user/payment/list |
+| get_online_ads() | Get Market Online Ads list | [/v5/p2p/item/online](https://bybit-exchange.github.io/docs/p2p/ad/online-ad-list) |
+| post_new_ad() | Post New Ad | [/v5/p2p/item/create](https://bybit-exchange.github.io/docs/p2p/ad/post-new-ad) |
+| remove_ad() | Remove ad | [/v5/p2p/item/cancel](https://bybit-exchange.github.io/docs/p2p/ad/remove-ad) |
+| update_ad() | Update / Relist My Ad | [/v5/p2p/item/update](https://bybit-exchange.github.io/docs/p2p/ad/update-list-ad) |
+| get_ads_list() | Get ads list | [/v5/p2p/item/personal/list](https://bybit-exchange.github.io/docs/p2p/ad/ad-list) |
+| get_ad_details() | Get ad detail | [/v5/p2p/item/info](https://bybit-exchange.github.io/docs/p2p/ad/ad-detail) |
 
-More modules will come soon, allowing for more advanced operations.
+Orders:
+| bybit_p2p method name | P2P API method name | P2P API endpoint path |
+| --- | --- | --- |
+| get_orders() | Get All Orders | [/v5/p2p/order/simplifyList](https://bybit-exchange.github.io/docs/p2p/order/order-list) |
+| get_order_details() | Get Order Details | [/v5/p2p/order/info](https://bybit-exchange.github.io/docs/p2p/order/order-detail) |
+| get_pending_orders() | Get Pending Orders | [/v5/p2p/order/pending/simplifyList](https://bybit-exchange.github.io/docs/p2p/order/pending-order) |
+| mark_as_paid() | Mark Order As Paid | [/v5/p2p/order/pay](https://bybit-exchange.github.io/docs/p2p/order/mark-order-as-paid) |
+| release_assets() | Release Digital Asset | [/v5/p2p/order/finish](https://bybit-exchange.github.io/docs/p2p/order/release-digital-asset) |
+| send_chat_message() | Send chat message | [/v5/p2p/order/message/send](https://bybit-exchange.github.io/docs/p2p/order/send-chat-msg) |
+| upload_chat_file() | Upload chat file | [/v5/p2p/oss/upload_file](https://bybit-exchange.github.io/docs/p2p/order/upload-chat-file) |
+| get_chat_messages() | Get Chat Message | [/v5/p2p/order/message/listpage](https://bybit-exchange.github.io/docs/p2p/order/chat-msg) |
+
+
+User:
+| get_account_information() | Get Account Information | [/v5/p2p/user/personal/info](https://bybit-exchange.github.io/docs/p2p/user/acct-info) |
+| get_counterparty_info() | Get Counterparty User Info | [/v5/p2p/user/order/personal/info](https://bybit-exchange.github.io/docs/p2p/user/counterparty-user-info) |
+| get_user_payment_types() | Get User Payment | [/v5/p2p/user/payment/list](https://bybit-exchange.github.io/docs/p2p/user/user-payment) |
+
+Misc:
+| bybit_p2p method name | P2P API method name | P2P API endpoint path |
+| --- | --- | --- |
+| get_current_balance() | Get Coin Balance | [/v5/asset/transfer/query-account-coins-balance](https://bybit-exchange.github.io/docs/p2p/all-balance) |
+
+More methods will come soon, allowing for more advanced operations.
 
 ## Development
 
