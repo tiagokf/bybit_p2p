@@ -16,7 +16,7 @@ print(api.get_account_information())
 print(api.get_ads_list())
 
 # 4. Get ad detail
-print(api.get_ad_detail(
+print(api.get_ad_details(
     itemId="1234567890123456789"
 ))
 
@@ -66,8 +66,8 @@ print(api.get_pending_orders(
     size=10
 ))
 
-# 9. Get user's order statistic
-print(api.get_user_order_statistics(
+# 9. Get counterparty info
+print(api.get_counterparty_info(
     originalUid="118027304",
     orderId="1234567890123456789"
 ))

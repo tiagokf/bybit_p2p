@@ -48,16 +48,16 @@ class P2PRequests(P2PManager):
             params=kwargs
         )
 
-    def get_ad_detail(self, **kwargs):
+    def get_ad_details(self, **kwargs):
         """
-        Get Ad Detail
+        Get Ad Details
 
         :key itemId: Advertisement ID
         :return: Response dictionary
         """
 
         return self.http_req_handler(
-            method=P2PMethods.GET_AD_DETAIL,
+            method=P2PMethods.GET_AD_DETAILS,
             params=kwargs
         )
 
@@ -136,9 +136,9 @@ class P2PRequests(P2PManager):
             params=kwargs
         )
 
-    def get_user_order_statistics(self, **kwargs):
+    def get_counterparty_info(self, **kwargs):
         """
-        Get user's order statistics
+        Get counterparty info
 
         :key originalUid: Counterparty UID
         :key orderId: Order ID
@@ -146,7 +146,7 @@ class P2PRequests(P2PManager):
         """
 
         return self.http_req_handler(
-            method=P2PMethods.GET_USER_ORDER_STATISTIC,
+            method=P2PMethods.GET_COUNTERPARTY_INFO,
             params=kwargs
         )
 
