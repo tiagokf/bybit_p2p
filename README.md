@@ -3,7 +3,7 @@
 
 [![pip package](https://img.shields.io/pypi/v/bybit-p2p)](https://pypi.org/project/bybit-p2p/)
 
-bybit_p2p is a package for Python to integrate your solutions with Bybit's P2P API.
+`bybit_p2p` is the official Python SDK for Bybit's P2P API, enabling seamless integration of your software solutions with Bybit's P2P trading platform.
 
 - No need to implement signature (HMAC, RSA) logic yourself
 - Easy & quick to work with

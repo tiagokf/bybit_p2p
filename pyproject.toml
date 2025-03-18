@@ -8,7 +8,7 @@ version = "1.0.0"
 authors = [
   { name="Nickolay Kushnarenko", email="kolya@nk.ax" },
 ]
-description = "Bybit P2P API integration library"
+description = "Official Bybit P2P API integration library written in Python."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -19,5 +19,5 @@ license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
 [project.urls]
-Homepage = "https://github.com/kolya5544/bybit_p2p"
-Issues = "https://github.com/kolya5544/bybit_p2p/issues"
+Homepage = "https://github.com/bybit-exchange/bybit_p2p"
+Issues = "https://github.com/bybit-exchange/bybit_p2p/issues"
