@@ -49,8 +49,8 @@ print(api.update_ad(
     paymentPeriod="15"
 ))
 
-# 6. Offline ad
-print(api.offline_ad(
+# 6. Remove ad
+print(api.remove_ad(
     itemId="1234567890123456789"
 ))
 

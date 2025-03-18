@@ -22,7 +22,7 @@ class P2PMethods:
                               "paymentPeriod"
                           ]
                           )
-    OFFLINE_AD = P2PMethod("/v5/p2p/item/cancel", "POST", ["itemId"])
+    REMOVE_AD = P2PMethod("/v5/p2p/item/cancel", "POST", ["itemId"])
     GET_ORDERS = P2PMethod("/v5/p2p/order/simplifyList", "POST", ["page", "size"])
     GET_PENDING_ORDERS = P2PMethod("/v5/p2p/order/pending/simplifyList", "POST", ["page", "size"])
     GET_COUNTERPARTY_INFO = P2PMethod("/v5/p2p/user/order/personal/info", "POST", ["originalUid", "orderId"])

@@ -85,16 +85,16 @@ class P2PRequests(P2PManager):
             params=kwargs
         )
 
-    def offline_ad(self, **kwargs):
+    def remove_ad(self, **kwargs):
         """
-        Offline ad
+        Remove ad
 
         :key itemId: Advertisement ID
         :return: Response dictionary
         """
 
         return self.http_req_handler(
-            method=P2PMethods.OFFLINE_AD,
+            method=P2PMethods.REMOVE_AD,
             params=kwargs
         )
 
