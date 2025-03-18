@@ -51,7 +51,7 @@ class P2PManager:
         self._tld = _TLD_MAIN if not tld else tld
         self._url = "https://{SUBDOMAIN}.{DOMAIN}.{TLD}".format(SUBDOMAIN=self._subdomain, DOMAIN=self._domain, TLD=self._tld)
         self.client = requests.Session()
-        self.client.verify = disable_ssl_checks
+        self.client.verify = not disable_ssl_checks
         self.client.headers.update(
             {
                 "Content-Type": "application/json",
