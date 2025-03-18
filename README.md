@@ -9,6 +9,8 @@
 - Easy & quick to work with
 - Actively developed and maintained
 
+*originally developed by kolya5544*
+
 ## Features
 
 bybit_p2p currently implements all methods available for P2P API. The library is in active development, so any newly released features will be added almost immediately. Here is a short list of what the library can do:
@@ -66,7 +68,7 @@ print(api.get_ads_list())
 
 RSA users should also set `rsa=True` in the constructor. TR/KZ/NL/etc. users can manipulate `domain` and `tld` parameters, like `tld="kz"`.
 
-You can find the complete Quickstart example here: [bybit_p2p quickstart](https://github.com/kolya5544/bybit_p2p/blob/master/examples/quickstart.py).
+You can find the complete Quickstart example here: [bybit_p2p quickstart](https://github.com/bybit-exchange/bybit_p2p/blob/master/examples/quickstart.py).
 
 ## Documentation
 
@@ -100,6 +102,8 @@ Orders:
 
 
 User:
+| bybit_p2p method name | P2P API method name | P2P API endpoint path |
+| --- | --- | --- |
 | get_account_information() | Get Account Information | [/v5/p2p/user/personal/info](https://bybit-exchange.github.io/docs/p2p/user/acct-info) |
 | get_counterparty_info() | Get Counterparty User Info | [/v5/p2p/user/order/personal/info](https://bybit-exchange.github.io/docs/p2p/user/counterparty-user-info) |
 | get_user_payment_types() | Get User Payment | [/v5/p2p/user/payment/list](https://bybit-exchange.github.io/docs/p2p/user/user-payment) |
@@ -113,7 +117,7 @@ More methods will come soon, allowing for more advanced operations.
 
 ## Development
 
-Contributions are welcome, non-breaking changes to the code are preferred.
+All contributions are welcome.
 
 ## License
 
