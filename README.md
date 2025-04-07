@@ -3,7 +3,7 @@
 
 [![pip package](https://img.shields.io/pypi/v/bybit-p2p)](https://pypi.org/project/bybit-p2p/)
 
-`bybit_p2p` is the official Python SDK for Bybit's P2P API, enabling seamless integration of your software solutions with Bybit's P2P trading platform.
+`bybit_p2p` is the official Python SDK for Bybit's P2P API, enabling seamless integration of your software solutions with Bybit's [P2P trading platform](https://www.bybit.com/en/promo/global/p2p-introduce).
 
 - No need to implement signature (HMAC, RSA) logic yourself
 - Easy & quick to work with
@@ -19,7 +19,7 @@ bybit_p2p currently implements all methods available for P2P API. The library is
 - Get pending orders, mark orders as paid, release assets to the buyer
 - Get and send text messages, upload files and send files to the chat
 - Get all public advertisements for tokens
-- ...and so much else! 🌟
+- ...and so much more! 🌟
 
 All features are usually one method call away and do not require advanced API understanding to interact with.
 
@@ -74,19 +74,19 @@ You can find the complete Quickstart example here: [bybit_p2p quickstart](https:
 
 bybit_p2p library currently consists of just one module, which is used for direct REST API requests to Bybit P2P API.
 
-You can access P2P API documentation using this link: [Not Available at this moment in time](https://google.com/)
+You can access P2P API documentation using this link: [P2P API documentation](https://bybit-exchange.github.io/docs/p2p/guide)
 
 Here is a breakdown of how API methods correspond to appropriate bybit_p2p methods:
 
 Advertisements:
 | bybit_p2p method name | P2P API method name | P2P API endpoint path |
 | --- | --- | --- |
-| get_online_ads() | Get Market Online Ads list | [/v5/p2p/item/online](https://bybit-exchange.github.io/docs/p2p/ad/online-ad-list) |
-| post_new_ad() | Post New Ad | [/v5/p2p/item/create](https://bybit-exchange.github.io/docs/p2p/ad/post-new-ad) |
-| remove_ad() | Remove ad | [/v5/p2p/item/cancel](https://bybit-exchange.github.io/docs/p2p/ad/remove-ad) |
-| update_ad() | Update / Relist My Ad | [/v5/p2p/item/update](https://bybit-exchange.github.io/docs/p2p/ad/update-list-ad) |
-| get_ads_list() | Get ads list | [/v5/p2p/item/personal/list](https://bybit-exchange.github.io/docs/p2p/ad/ad-list) |
-| get_ad_details() | Get ad detail | [/v5/p2p/item/info](https://bybit-exchange.github.io/docs/p2p/ad/ad-detail) |
+| get_online_ads() | Get Ads | [/v5/p2p/item/online](https://bybit-exchange.github.io/docs/p2p/ad/online-ad-list) |
+| post_new_ad() | Post Ad | [/v5/p2p/item/create](https://bybit-exchange.github.io/docs/p2p/ad/post-new-ad) |
+| remove_ad() | Remove Ad | [/v5/p2p/item/cancel](https://bybit-exchange.github.io/docs/p2p/ad/remove-ad) |
+| update_ad() | Update / Relist Ad | [/v5/p2p/item/update](https://bybit-exchange.github.io/docs/p2p/ad/update-list-ad) |
+| get_ads_list() | Get My Ads | [/v5/p2p/item/personal/list](https://bybit-exchange.github.io/docs/p2p/ad/ad-list) |
+| get_ad_details() | Get My Ad Details | [/v5/p2p/item/info](https://bybit-exchange.github.io/docs/p2p/ad/ad-detail) |
 
 Orders:
 | bybit_p2p method name | P2P API method name | P2P API endpoint path |
@@ -94,10 +94,10 @@ Orders:
 | get_orders() | Get All Orders | [/v5/p2p/order/simplifyList](https://bybit-exchange.github.io/docs/p2p/order/order-list) |
 | get_order_details() | Get Order Details | [/v5/p2p/order/info](https://bybit-exchange.github.io/docs/p2p/order/order-detail) |
 | get_pending_orders() | Get Pending Orders | [/v5/p2p/order/pending/simplifyList](https://bybit-exchange.github.io/docs/p2p/order/pending-order) |
-| mark_as_paid() | Mark Order As Paid | [/v5/p2p/order/pay](https://bybit-exchange.github.io/docs/p2p/order/mark-order-as-paid) |
-| release_assets() | Release Digital Asset | [/v5/p2p/order/finish](https://bybit-exchange.github.io/docs/p2p/order/release-digital-asset) |
-| send_chat_message() | Send chat message | [/v5/p2p/order/message/send](https://bybit-exchange.github.io/docs/p2p/order/send-chat-msg) |
-| upload_chat_file() | Upload chat file | [/v5/p2p/oss/upload_file](https://bybit-exchange.github.io/docs/p2p/order/upload-chat-file) |
+| mark_as_paid() | Mark Order as Paid | [/v5/p2p/order/pay](https://bybit-exchange.github.io/docs/p2p/order/mark-order-as-paid) |
+| release_assets() | Release Assets | [/v5/p2p/order/finish](https://bybit-exchange.github.io/docs/p2p/order/release-digital-asset) |
+| send_chat_message() | Send Chat Message | [/v5/p2p/order/message/send](https://bybit-exchange.github.io/docs/p2p/order/send-chat-msg) |
+| upload_chat_file() | Upload Chat File | [/v5/p2p/oss/upload_file](https://bybit-exchange.github.io/docs/p2p/order/upload-chat-file) |
 | get_chat_messages() | Get Chat Message | [/v5/p2p/order/message/listpage](https://bybit-exchange.github.io/docs/p2p/order/chat-msg) |
 
 
