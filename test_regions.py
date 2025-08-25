@@ -6,10 +6,10 @@ load_dotenv()
 
 # Testa diferentes domínios/regiões
 regions = [
-    {"name": "Global", "domain": "bybit.com", "tld": "com"},
-    {"name": "Turkey", "domain": "bybit.com", "tld": "tr"},
-    {"name": "Kazakhstan", "domain": "bybit.com", "tld": "kz"},
-    {"name": "Netherlands", "domain": "bybit.com", "tld": "nl"},
+    {"name": "Global", "domain": "bybit", "tld": "com"},
+    {"name": "Turkey", "domain": "bybit", "tld": "tr"},
+    {"name": "Kazakhstan", "domain": "bybit", "tld": "kz"},
+    {"name": "Netherlands", "domain": "bybit", "tld": "nl"},
 ]
 
 for region in regions:

@@ -17,10 +17,10 @@ def index():
 @app.route('/api/connect', methods=['POST'])
 def connect_api():
     regions = [
-        {"name": "Global", "tld": "com"},
-        {"name": "Turkey", "tld": "tr"},
-        {"name": "Kazakhstan", "tld": "kz"},
-        {"name": "Netherlands", "tld": "nl"}
+        {"name": "Global", "domain": "bybit", "tld": "com"},
+        {"name": "Turkey", "domain": "bybit", "tld": "tr"},
+        {"name": "Kazakhstan", "domain": "bybit", "tld": "kz"},
+        {"name": "Netherlands", "domain": "bybit", "tld": "nl"}
     ]
     
     for region in regions:
@@ -30,6 +30,7 @@ def connect_api():
                 testnet=False,
                 api_key=os.getenv("BYBIT_API_KEY"),
                 api_secret=os.getenv("BYBIT_API_SECRET"),
+                domain=region["domain"],
                 tld=region["tld"]
             )
             # Testa a conexão
@@ -54,20 +55,26 @@ def get_orders():
     return make_api_call(lambda api: api.get_pending_orders())
 
 def make_api_call(func):
-    regions = ["com", "tr", "kz", "nl"]
+    regions = [
+        {"domain": "bybit", "tld": "com"},
+        {"domain": "bybit", "tld": "tr"},
+        {"domain": "bybit", "tld": "kz"},
+        {"domain": "bybit", "tld": "nl"}
+    ]
     
-    for tld in regions:
+    for region in regions:
         try:
             api = P2P(
                 testnet=False,
                 api_key=os.getenv("BYBIT_API_KEY"),
                 api_secret=os.getenv("BYBIT_API_SECRET"),
-                tld=tld
+                domain=region["domain"],
+                tld=region["tld"]
             )
             result = func(api)
             return jsonify({"success": True, "data": result})
         except Exception as e:
-            logger.warning(f"Falha com TLD {tld}: {str(e)}")
+            logger.warning(f"Falha com TLD {region['tld']}: {str(e)}")
             continue
     
     return jsonify({"success": False, "error": "Falha em todas as regiões"})
