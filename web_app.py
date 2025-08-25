@@ -2,10 +2,13 @@ from flask import Flask, render_template, request, jsonify
 import os
 from dotenv import load_dotenv
 from bybit_p2p import P2P
+import logging
 
 load_dotenv()
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @app.route('/')
 def index():
@@ -13,54 +16,62 @@ def index():
 
 @app.route('/api/connect', methods=['POST'])
 def connect_api():
-    try:
-        api = P2P(
-            testnet=False,
-            api_key=os.getenv("BYBIT_API_KEY"),
-            api_secret=os.getenv("BYBIT_API_SECRET")
-        )
-        return jsonify({"success": True, "message": "Conectado com sucesso!"})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+    regions = [
+        {"name": "Global", "tld": "com"},
+        {"name": "Turkey", "tld": "tr"},
+        {"name": "Kazakhstan", "tld": "kz"},
+        {"name": "Netherlands", "tld": "nl"}
+    ]
+    
+    for region in regions:
+        try:
+            logger.info(f"Tentando conectar via {region['name']}")
+            api = P2P(
+                testnet=False,
+                api_key=os.getenv("BYBIT_API_KEY"),
+                api_secret=os.getenv("BYBIT_API_SECRET"),
+                tld=region["tld"]
+            )
+            # Testa a conexão
+            api.get_account_information()
+            return jsonify({"success": True, "message": f"Conectado via {region['name']}!"})
+        except Exception as e:
+            logger.warning(f"Falha em {region['name']}: {str(e)}")
+            continue
+    
+    return jsonify({"success": False, "error": "Não foi possível conectar em nenhuma região"})
 
 @app.route('/api/balance', methods=['GET'])
 def get_balance():
-    try:
-        api = P2P(
-            testnet=False,
-            api_key=os.getenv("BYBIT_API_KEY"),
-            api_secret=os.getenv("BYBIT_API_SECRET")
-        )
-        balance = api.get_current_balance(accountType="FUND", coin="USDT")
-        return jsonify({"success": True, "data": balance})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+    return make_api_call(lambda api: api.get_current_balance(accountType="FUND", coin="USDT"))
 
 @app.route('/api/ads', methods=['GET'])
 def get_ads():
-    try:
-        api = P2P(
-            testnet=False,
-            api_key=os.getenv("BYBIT_API_KEY"),
-            api_secret=os.getenv("BYBIT_API_SECRET")
-        )
-        ads = api.get_ads_list()
-        return jsonify({"success": True, "data": ads})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+    return make_api_call(lambda api: api.get_ads_list())
 
 @app.route('/api/orders', methods=['GET'])
 def get_orders():
-    try:
-        api = P2P(
-            testnet=False,
-            api_key=os.getenv("BYBIT_API_KEY"),
-            api_secret=os.getenv("BYBIT_API_SECRET")
-        )
-        orders = api.get_pending_orders()
-        return jsonify({"success": True, "data": orders})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+    return make_api_call(lambda api: api.get_pending_orders())
+
+def make_api_call(func):
+    regions = ["com", "tr", "kz", "nl"]
+    
+    for tld in regions:
+        try:
+            api = P2P(
+                testnet=False,
+                api_key=os.getenv("BYBIT_API_KEY"),
+                api_secret=os.getenv("BYBIT_API_SECRET"),
+                tld=tld
+            )
+            result = func(api)
+            return jsonify({"success": True, "data": result})
+        except Exception as e:
+            logger.warning(f"Falha com TLD {tld}: {str(e)}")
+            continue
+    
+    return jsonify({"success": False, "error": "Falha em todas as regiões"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=False)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port, debug=False)

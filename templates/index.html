@@ -25,6 +25,10 @@
             <button class="btn btn-success" onclick="getOrders()">Pedidos Pendentes</button>
         </div>
         
+        <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 4px;">
+            <strong>Info:</strong> A aplicação tenta conectar automaticamente via diferentes regiões (Global, Turkey, Kazakhstan, Netherlands) para contornar bloqueios geográficos.
+        </div>
+        
         <div id="result" class="result" style="display:none;"></div>
     </div>
 
@@ -35,14 +39,30 @@
             result.className = 'result ' + (isError ? 'error' : 'success');
             result.textContent = JSON.stringify(data, null, 2);
         }
+        
+        function showLoading(button) {
+            button.disabled = true;
+            button.textContent = 'Carregando...';
+        }
+        
+        function hideLoading(button, originalText) {
+            button.disabled = false;
+            button.textContent = originalText;
+        }
 
         async function testConnection() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            showLoading(btn);
+            
             try {
                 const response = await fetch('/api/connect', { method: 'POST' });
                 const data = await response.json();
                 showResult(data, !data.success);
             } catch (error) {
                 showResult({ error: error.message }, true);
+            } finally {
+                hideLoading(btn, originalText);
             }
         }
 

@@ -9,4 +9,7 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["python", "web_app.py"]
+# Usar gunicorn para produção
+RUN pip install gunicorn
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "web_app:app"]
