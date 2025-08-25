@@ -1,0 +1,4 @@
+requests>=2.32.0
+requests-toolbelt>=1.0.0
+pycryptodome>=3.23.0
+python-dotenv>=1.1.0
